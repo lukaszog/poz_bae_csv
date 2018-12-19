@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Perser.readFile();
+        Parser.readFile();
 
         int tab[] = new int[3];
         try {

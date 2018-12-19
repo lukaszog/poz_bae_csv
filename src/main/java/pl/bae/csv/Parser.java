@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class Perser {
+public class Parser {
 
     public static Path
-            file = Paths.get("file.csv");
+            file = Paths.get("file_tmp.csv");
 
     public static void readFile() {
         try {
@@ -19,10 +23,10 @@ public class Perser {
             System.out.println(l);
 
             String[] allLines = l.split("\\r");
-            Line[] linesObj = new Line[allLines.length - 1];
+            Line[] linesObj = new Line[allLines.length-1];
 
-            for(int i=1; i<linesObj.length; i++){
-                String[] result =  allLines[i].split(",");
+            for(int i=0; i<linesObj.length; i++){
+                String[] result =  allLines[i+1].split(",");
                 System.out.println(result[0]);
 
                 linesObj[i] = new Line(
@@ -39,15 +43,30 @@ public class Perser {
                         Double.parseDouble(result[10]),
                         Double.parseDouble(result[11]));
             }
+            //file_tmp.csv = 10 lini
+            Map<String, List<Line>> map = new HashMap<>();
 
-            System.out.println(linesObj[10]);
+            for (Line line: linesObj){
+
+                String key = line.getCity();
+                System.out.println(key);
+                List<Line> lista = map.get(key);
+                if (lista == null){
+                    List<Line> lineList = new ArrayList<>();
+                    lineList.add(line);
+                    map.put(key, lineList);
+                }else {
+                    List<Line> newList = map.get(key);
+                    newList.add(line);
+                    map.put(key,newList);
+                }
+            }
+            System.out.println(map);
+
+
 
         } catch (IOException error) {
             error.printStackTrace();
         }
-
-
     }
-
-
 }
